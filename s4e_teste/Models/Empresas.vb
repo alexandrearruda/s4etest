@@ -1,8 +1,10 @@
-﻿Public Class Empresas
-    Property idEmpresa As Integer
+﻿Namespace Models
+    Public Class Empresas
+        Property IdEmpresa As Integer
 
-    Property nome As String
+        Property NomeEmpresa As String
 
-    Property cnpf As String
+        Property Cnpj As String
 
-End Class
+    End Class
+End Namespace
