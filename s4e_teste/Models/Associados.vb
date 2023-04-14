@@ -1,5 +1,6 @@
 ﻿Namespace Models
     Public Class Associados
+
         Property IdAssociado As Integer
 
         Property Nome As String
