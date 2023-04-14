@@ -9,25 +9,27 @@ Namespace Dal
 
         Public Sub AlterarEmpresas(id As Integer)
 
-            Dim strSql As String = "UPDATE cadEmpresa SET nomeEmpresa=@nomeEmpresa,cnpj=@cnpj WHERE idEmpresa=@idEmpresa"
+            If ValidarCnpj(DadosEmpresas.Cnpj) Then
 
-            Using cmd As New SqlCommand()
-                cmd.Parameters.Add("@idEmpresa", SqlDbType.Int).Value = id
-                cmd.Parameters.Add("@nomeEmpresa", SqlDbType.VarChar).Value = DadosEmpresas.NomeEmpresa
-                cmd.Parameters.Add("@cnpj", SqlDbType.VarChar).Value = DadosEmpresas.Cnpj
+                Dim strSql As String = "UPDATE cadEmpresa SET nomeEmpresa=@nomeEmpresa,cnpj=@cnpj WHERE idEmpresa=@idEmpresa"
 
-                cmd.CommandText = strSql
-                cmd.Connection = db
-                Try
-                    db.Open()
-                    cmd.ExecuteReader()
-                Catch ex As Exception
-                    Console.WriteLine(ex.ToString)
-                Finally
-                    db.Close()
-                End Try
-            End Using
+                Using cmd As New SqlCommand()
+                    cmd.Parameters.Add("@idEmpresa", SqlDbType.Int).Value = id
+                    cmd.Parameters.Add("@nomeEmpresa", SqlDbType.VarChar).Value = DadosEmpresas.NomeEmpresa
+                    cmd.Parameters.Add("@cnpj", SqlDbType.VarChar).Value = DadosEmpresas.Cnpj
 
+                    cmd.CommandText = strSql
+                    cmd.Connection = db
+                    Try
+                        db.Open()
+                        cmd.ExecuteReader()
+                    Catch ex As Exception
+                        Console.WriteLine(ex.ToString)
+                    Finally
+                        db.Close()
+                    End Try
+                End Using
+            End If
         End Sub
 
         Public Sub DeleteEmpresas(id As Integer)
@@ -54,25 +56,49 @@ Namespace Dal
 
         Public Sub AddEmpresas()
 
-            Dim strSql As String = "INSERT INTO cadEmpresa (nomeEmpresa,cnpj) VALUES (@nomeEmpresa,@cnpj)"
+            If ValidarCnpj(DadosEmpresas.Cnpj) Then
+
+                Dim strSql As String = "INSERT INTO cadEmpresa (nomeEmpresa,cnpj) VALUES (@nomeEmpresa,@cnpj)"
+
+                Using cmd As New SqlCommand()
+                    cmd.Parameters.Add("@nomeEmpresa", SqlDbType.VarChar).Value = DadosEmpresas.NomeEmpresa
+                    cmd.Parameters.Add("@cnpj", SqlDbType.VarChar).Value = DadosEmpresas.Cnpj
+
+                    cmd.CommandText = strSql
+                    cmd.Connection = db
+                    Try
+                        db.Open()
+                        cmd.ExecuteReader()
+                    Catch ex As Exception
+                        Console.WriteLine(ex.ToString)
+                    Finally
+                        db.Close()
+                    End Try
+                End Using
+
+            End If
+        End Sub
+
+        Private Function ValidarCnpj(cnpj As String) As Boolean
 
             Using cmd As New SqlCommand()
-                cmd.Parameters.Add("@nomeEmpresa", SqlDbType.VarChar).Value = DadosEmpresas.NomeEmpresa
-                cmd.Parameters.Add("@cnpj", SqlDbType.VarChar).Value = DadosEmpresas.Cnpj
-
-                cmd.CommandText = strSql
+                cmd.CommandText = "SELECT COUNT(1) FROM cadEmpresa WHERE cnpj=@cnpj"
+                cmd.Parameters.Add("@cnpj", SqlDbType.VarChar).Value = cnpj
                 cmd.Connection = db
-                Try
-                    db.Open()
-                    cmd.ExecuteReader()
-                Catch ex As Exception
-                    Console.WriteLine(ex.ToString)
-                Finally
-                    db.Close()
-                End Try
+                db.Open()
+
+                If Convert.ToInt32(cmd.ExecuteScalar()) >= 1 Then
+
+                    Return False
+
+                End If
+
+                db.Close()
             End Using
 
-        End Sub
+            Return True
+
+        End Function
 
         Public Function GetEmpresasAssociados(id As Integer?) As IEnumerable(Of Models.Empresas)
 
