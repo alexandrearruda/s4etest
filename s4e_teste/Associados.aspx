@@ -13,7 +13,7 @@
                     &nbsp &nbsp<span class="form-text">Consultar associados por id:</span>
                     <asp:TextBox ID="txtCosultarId" Width="35px" runat="server"></asp:TextBox>
                     &nbsp<asp:Button class="form-text" ID="btnConsultarAssociadosId" Text="Pesquisar" runat="server" />
-                     &nbsp &nbsp<span class="form-text">Consultar associados por CPF:</span>
+                    &nbsp &nbsp<span class="form-text">Consultar associados por CPF:</span>
                     <asp:TextBox ID="txtCosultarCpf" Width="300px" runat="server"></asp:TextBox>
                     &nbsp<asp:Button class="form-text" ID="btnConsultarAssociadosCpf" Text="Pesquisar" runat="server" />
                     <br />
@@ -33,18 +33,25 @@
             </tr>
             <tr>
                 <td valign="bottom">
+
                     <asp:Label class="form-text" Text="Nome:" ID="lblNome" runat="server"></asp:Label>
-                    <asp:TextBox class="form-text" ID="txtNome" runat="server" Width="300px"></asp:TextBox>
+                    <asp:TextBox class="form-text" ID="txtNome" runat="server" Width="300px"></asp:TextBox>                 
                     <asp:Label class="form-text" Text="Cpf:" ID="lblCpf" runat="server"></asp:Label>
-                    &nbsp &nbsp<asp:TextBox class="form-text" ID="txtCpf" runat="server"></asp:TextBox>
+                    &nbsp &nbsp<asp:TextBox class="form-text" ID="txtCpf" runat="server" Width="300px"></asp:TextBox>                    
                     <asp:Label class="form-text" Text="Data Nascimento:" ID="lblDtNascimento" runat="server"></asp:Label>
                     <asp:TextBox ID="txtData" runat="server" class="form-text" MaxLength="10" Width="100px"></asp:TextBox>
                     <cc1:CalendarExtender ID="txtData_CalendarExtender" runat="server" TargetControlID="txtData" Format="dd/MM/yyyy"></cc1:CalendarExtender>
                     <br />
+                    <asp:Label class="form-text" Text="Associar Empresas:" ID="lblAssociarEmpIns" runat="server"></asp:Label>
+                    <br />
+                    <asp:ListBox class="form-text" runat="server" ID="lstAssociarEmpIns" SelectionMode="Multiple" Rows="4"></asp:ListBox>
+
                 </td>
             </tr>
+
             <tr>
                 <td valign="bottom">
+                    <br />
                     <asp:Button ID="btnInserir" Text="Inserir" class="form-text" runat="server" />
                     <br />
                 </td>
@@ -71,6 +78,11 @@
                     <asp:Label class="form-text" Text="Data Nascimento:" ID="lbldtNascimentoAlterar" runat="server"></asp:Label>
                     <asp:TextBox ID="txtdtNascimentoAlterar" runat="server" class="form-text" MaxLength="10" Width="100px"></asp:TextBox>
                     <cc1:CalendarExtender ID="CalendarExtender1" runat="server" TargetControlID="txtdtNascimentoAlterar" Format="dd/MM/yyyy"></cc1:CalendarExtender>
+                    <br />
+                    <asp:Label class="form-text" Text="Associar Empresas:" ID="lblAssociarEmpAlt" runat="server"></asp:Label>
+                    <br />
+                    <asp:ListBox class="form-text" runat="server" ID="lstAssociarEmpAlt" SelectionMode="Multiple"></asp:ListBox>
+
                     <br />
                 </td>
             </tr>
@@ -119,6 +131,6 @@
         <SortedDescendingHeaderStyle BackColor="#C2A47B" />
         <EmptyDataTemplate>Nenhum associado cadastrado</EmptyDataTemplate>
         <RowStyle CssClass="form-text" />
-      
+
     </asp:GridView>
 </asp:Content>

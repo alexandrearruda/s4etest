@@ -4,6 +4,7 @@
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
         If Not IsPostBack Then
             RecuperarAssociados(0)
+            CarregarComboEmpresas()
         End If
     End Sub
 
@@ -59,6 +60,7 @@
     Private Sub InserirAssociados()
         Dim associados As New Controllers.AssociadosController
         associados.PostAssociados(txtNome.Text, txtCpf.Text, txtData.Text, 0)
+        associados.AssociarEmpresa(lstAssociarEmpIns)
         gvAssociados.DataSource = associados.GetAssociadosByCpf(txtCpf.Text)
         gvAssociados.DataBind()
 
@@ -81,8 +83,12 @@
         gvAssociados.DataSource = associados.GetAssociados(Convert.ToInt32(id))
         gvAssociados.DataBind()
 
-
     End Sub
-
-
+    Private Sub CarregarComboEmpresas()
+        Dim associados As New Controllers.AssociadosController
+        For Each item In associados.GetComboEmpresas()
+            lstAssociarEmpAlt.Items.Add(New ListItem(item.NomeEmpresa, item.IdEmpresa))
+            lstAssociarEmpIns.Items.Add(New ListItem(item.NomeEmpresa, item.IdEmpresa))
+        Next
+    End Sub
 End Class

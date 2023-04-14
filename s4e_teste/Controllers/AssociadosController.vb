@@ -18,6 +18,19 @@ Namespace Controllers
             Return associados.GetAssociadosByCpf(cpf)
         End Function
 
+        Public Function GetComboEmpresas() As List(Of Models.Empresas)
+            Return associados.GetComboEmpresas()
+        End Function
+
+        Public Sub AssociarEmpresa(listEmpresas As ListBox)
+
+            Dim selEmpresa As New List(Of Integer)
+            For Each item In listEmpresas.GetSelectedIndices()
+                selEmpresa.Add(listEmpresas.Items.Item(item).Value)
+            Next
+
+            associados.AssociarEmpresa(selEmpresa)
+        End Sub
 
         Public Sub PostAssociados(nome As String, cpf As String, dtNascimento As String, id As Integer)
 
@@ -29,7 +42,9 @@ Namespace Controllers
                     associados.AlterarAssociados(id)
                 Else
                     associados.AddAssociados()
+                    associados.DadosAssociados.IdAssociado = associados.GetAssociadosByCpf(cpf).Item(0).IdAssociado
                 End If
+
             End If
         End Sub
 

@@ -140,6 +140,24 @@ Partial Public Class About
     Protected WithEvents txtData_CalendarExtender As Global.AjaxControlToolkit.CalendarExtender
 
     '''<summary>
+    '''lblAssociarEmpIns control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblAssociarEmpIns As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''lstAssociarEmpIns control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lstAssociarEmpIns As Global.System.Web.UI.WebControls.ListBox
+
+    '''<summary>
     '''btnInserir control.
     '''</summary>
     '''<remarks>
@@ -237,6 +255,24 @@ Partial Public Class About
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents CalendarExtender1 As Global.AjaxControlToolkit.CalendarExtender
+
+    '''<summary>
+    '''lblAssociarEmpAlt control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblAssociarEmpAlt As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''lstAssociarEmpAlt control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lstAssociarEmpAlt As Global.System.Web.UI.WebControls.ListBox
 
     '''<summary>
     '''btnAlterar control.

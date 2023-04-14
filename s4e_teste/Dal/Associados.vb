@@ -1,7 +1,4 @@
 ﻿Imports System.Data.SqlClient
-Imports System.Reflection
-Imports System.ServiceModel
-Imports System.ServiceModel.Activation
 
 Namespace Dal
 
@@ -28,7 +25,7 @@ Namespace Dal
                     cmd.Connection = db
                     Try
                         db.Open()
-                        cmd.ExecuteReader()
+                        cmd.ExecuteScalar()
                     Catch ex As Exception
                         Console.WriteLine(ex.ToString)
                     Finally
@@ -50,7 +47,7 @@ Namespace Dal
                 cmd.Connection = db
                 Try
                     db.Open()
-                    cmd.ExecuteReader()
+                    cmd.ExecuteScalar()
                 Catch ex As Exception
                     Console.WriteLine(ex.ToString)
                 Finally
@@ -76,7 +73,7 @@ Namespace Dal
                     cmd.Connection = db
                     Try
                         db.Open()
-                        cmd.ExecuteReader()
+                        cmd.ExecuteScalar()
                     Catch ex As Exception
                         Console.WriteLine(ex.ToString)
                     Finally
@@ -86,6 +83,67 @@ Namespace Dal
 
             End If
         End Sub
+
+        Public Function GetComboEmpresas() As List(Of Models.Empresas)
+
+            Dim strSql As String = "SELECT idEmpresa,nomeEmpresa FROM cadEmpresa"
+            Dim retEmpresas As New List(Of Models.Empresas)
+            Using cmd As New SqlCommand()
+                cmd.CommandText = strSql
+                cmd.Connection = db
+                db.Open()
+                Using dr As SqlDataReader = cmd.ExecuteReader()
+                    While dr.Read
+                        retEmpresas.Add(New Models.Empresas With {
+                                .IdEmpresa = dr("idEmpresa"),
+                                .NomeEmpresa = dr("nomeEmpresa")
+                                })
+                    End While
+                End Using
+                db.Close()
+            End Using
+
+            Return retEmpresas
+        End Function
+
+        Public Sub AssociarEmpresa(selEmpresa As List(Of Integer))
+
+            Dim strSql As String = "INSERT INTO associadosXempresa (idAssociado,idEmpresa) VALUES (@idAssociado,@idEmpresa)"
+            Using cmd As New SqlCommand()
+                cmd.CommandText = strSql
+                cmd.Connection = db
+                db.Open()
+                For Each item In selEmpresa
+                    cmd.Parameters.Add("@idAssociado", SqlDbType.Int).Value = DadosAssociados.IdAssociado
+                    cmd.Parameters.Add("@idEmpresa", SqlDbType.Int).Value = item
+                    If validarAssociacao(DadosAssociados.IdAssociado, item) Then
+                        cmd.ExecuteScalar()
+                    End If
+                    cmd.Parameters.Clear()
+                Next
+
+                db.Close()
+            End Using
+
+        End Sub
+
+        Private Function validarAssociacao(idAssociado As Integer, idEmpresa As Integer) As Boolean
+
+            Dim strSql As String = "SELECT COUNT(1) FROM associadosXempresa WHERE idAssociado=@idAssociado AND idEmpresa=@idEmpresa"
+            Using cmd As New SqlCommand()
+                cmd.CommandText = strSql
+                cmd.Connection = db
+
+                cmd.Parameters.Add("@idAssociado", SqlDbType.Int).Value = idAssociado
+                cmd.Parameters.Add("@idEmpresa", SqlDbType.Int).Value = idEmpresa
+
+                If Convert.ToInt32(cmd.ExecuteScalar()) >= 1 Then
+                    Return False
+                End If
+
+                Return True
+            End Using
+        End Function
 
         Public Function GetAssociadosEmpresa(id As Integer?) As IEnumerable(Of Models.Associados)
 
@@ -190,12 +248,11 @@ Namespace Dal
 
         End Function
 
-        Public Function GetAssociadosByCpf(cpf As String) As IEnumerable(Of Models.Associados)
+        Public Function GetAssociadosByCpf(cpf As String) As List(Of Models.Associados)
 
             If String.IsNullOrEmpty(cpf) Then
                 Return New List(Of Models.Associados)
             End If
-
 
             Dim strSql As String = "SELECT * FROM cadAssociados WHERE cpf=@cpf "
 
@@ -210,7 +267,6 @@ Namespace Dal
 
                     db.Open()
                     Using dr As SqlDataReader = cmd.ExecuteReader()
-
 
                         While dr.Read
 
