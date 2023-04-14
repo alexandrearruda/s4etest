@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Empresas" Language="VB" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Empresas.aspx.vb" Inherits="s4e_teste.Contact" %>
+﻿<%@ Page Title="Empresas" Language="VB" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Empresas.aspx.vb" Inherits="s4e_teste.Empresas" %>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
    <asp:Panel ID="pnFiltrosempresas" runat="server" CssClass="form">

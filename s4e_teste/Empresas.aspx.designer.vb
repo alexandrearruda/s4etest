@@ -11,7 +11,7 @@ Option Strict On
 Option Explicit On
 
 
-Partial Public Class Contact
+Partial Public Class Empresas
 
     '''<summary>
     '''pnFiltrosempresas control.

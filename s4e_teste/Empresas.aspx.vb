@@ -1,6 +1,6 @@
 ﻿Imports System.Runtime.InteropServices.ComTypes
 
-Public Class Contact
+Public Class Empresas
     Inherits Page
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
@@ -40,7 +40,7 @@ Public Class Contact
 
         Dim empresas As New Controllers.EmpresaController
         empresas.DeleteEmpresas(Convert.ToInt32(id))
-        gvEmpresas.DataSource = Empresas.GetEmpresas(0)
+        gvEmpresas.DataSource = empresas.GetEmpresas(0)
         gvEmpresas.DataBind()
 
     End Sub
@@ -53,7 +53,7 @@ Public Class Contact
 
         Dim empresas As New Controllers.EmpresaController
         empresas.PostEmpresas(txtNomeAlterar.Text, txtCnpjAlterar.Text, id)
-        gvEmpresas.DataSource = Empresas.GetEmpresas(Convert.ToInt32(id))
+        gvEmpresas.DataSource = empresas.GetEmpresas(Convert.ToInt32(id))
         gvEmpresas.DataBind()
 
     End Sub
@@ -80,7 +80,7 @@ Public Class Contact
             id = "0"
         End If
 
-        gvEmpresas.DataSource = Empresas.GetEmpresas(Convert.ToInt32(id))
+        gvEmpresas.DataSource = empresas.GetEmpresas(Convert.ToInt32(id))
         gvEmpresas.DataBind()
 
 

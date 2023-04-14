@@ -1,4 +1,4 @@
-﻿Public Class About
+﻿Public Class Associados
     Inherits Page
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
@@ -52,6 +52,9 @@
 
         Dim associados As New Controllers.AssociadosController
         associados.PostAssociados(txtNomeAlterar.Text, txtCpfAlterar.Text, txtdtNascimentoAlterar.Text, id)
+        associados.RemoverAssociacaoEmpresa(lstAssociarEmpAlt)
+        associados.AssociarEmpresa(lstAssociarEmpAlt)
+
         gvAssociados.DataSource = associados.GetAssociados(Convert.ToInt32(id))
         gvAssociados.DataBind()
 
@@ -89,6 +92,27 @@
         For Each item In associados.GetComboEmpresas()
             lstAssociarEmpAlt.Items.Add(New ListItem(item.NomeEmpresa, item.IdEmpresa))
             lstAssociarEmpIns.Items.Add(New ListItem(item.NomeEmpresa, item.IdEmpresa))
+        Next
+    End Sub
+
+    Private Sub gvAssociados_SelectedIndexChanged(sender As Object, e As EventArgs) Handles gvAssociados.SelectedIndexChanged
+        Dim grid As GridView = CType(sender, GridView)
+        Dim linha As Integer = grid.SelectedRow.RowIndex
+        If linha >= 0 Then
+            txtIdAlterar.Text = grid.Rows(linha).Cells(1).Text
+            txtRemoverId.Text = grid.Rows(linha).Cells(1).Text
+            txtNomeAlterar.Text = grid.Rows(linha).Cells(2).Text.ToString()
+            txtCpfAlterar.Text = grid.Rows(linha).Cells(3).Text
+            txtdtNascimentoAlterar.Text = grid.Rows(linha).Cells(4).Text
+        End If
+        GetAssociacaoEmpresas()
+    End Sub
+
+    Private Sub GetAssociacaoEmpresas()
+        Dim associados As New Controllers.AssociadosController
+        Dim lstAssociacoes As List(Of Integer) = associados.GetAssociacaoEmpresas(txtIdAlterar.Text)
+        For Each item In lstAssociacoes
+            lstAssociarEmpAlt.Items.FindByValue(item).Selected = True
         Next
     End Sub
 End Class

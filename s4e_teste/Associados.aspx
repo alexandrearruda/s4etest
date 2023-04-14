@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Associados" Language="VB" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Associados.aspx.vb" Inherits="s4e_teste.About" %>
+﻿<%@ Page Title="Associados" Language="VB" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Associados.aspx.vb" Inherits="s4e_teste.Associados" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc1" %>
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
@@ -35,9 +35,9 @@
                 <td valign="bottom">
 
                     <asp:Label class="form-text" Text="Nome:" ID="lblNome" runat="server"></asp:Label>
-                    <asp:TextBox class="form-text" ID="txtNome" runat="server" Width="300px"></asp:TextBox>                 
+                    <asp:TextBox class="form-text" ID="txtNome" runat="server" Width="300px"></asp:TextBox>
                     <asp:Label class="form-text" Text="Cpf:" ID="lblCpf" runat="server"></asp:Label>
-                    &nbsp &nbsp<asp:TextBox class="form-text" ID="txtCpf" runat="server" Width="300px"></asp:TextBox>                    
+                    &nbsp &nbsp<asp:TextBox class="form-text" ID="txtCpf" runat="server" Width="300px"></asp:TextBox>
                     <asp:Label class="form-text" Text="Data Nascimento:" ID="lblDtNascimento" runat="server"></asp:Label>
                     <asp:TextBox ID="txtData" runat="server" class="form-text" MaxLength="10" Width="100px"></asp:TextBox>
                     <cc1:CalendarExtender ID="txtData_CalendarExtender" runat="server" TargetControlID="txtData" Format="dd/MM/yyyy"></cc1:CalendarExtender>
@@ -82,8 +82,6 @@
                     <asp:Label class="form-text" Text="Associar Empresas:" ID="lblAssociarEmpAlt" runat="server"></asp:Label>
                     <br />
                     <asp:ListBox class="form-text" runat="server" ID="lstAssociarEmpAlt" SelectionMode="Multiple"></asp:ListBox>
-
-                    <br />
                 </td>
             </tr>
             <tr>
@@ -131,6 +129,9 @@
         <SortedDescendingHeaderStyle BackColor="#C2A47B" />
         <EmptyDataTemplate>Nenhum associado cadastrado</EmptyDataTemplate>
         <RowStyle CssClass="form-text" />
+        <Columns>
+              <asp:CommandField ShowSelectButton="True" />
+        </Columns>
 
     </asp:GridView>
 </asp:Content>
