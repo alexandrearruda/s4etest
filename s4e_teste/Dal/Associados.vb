@@ -7,23 +7,65 @@ Namespace Dal
 
     Public Class Associados
 
-
         Private Const ConString As String = "Server=127.0.0.1;Database=master;User Id=sa;Password=AIVccn067"
+        Private ReadOnly db As New SqlConnection(ConString)
 
-        'Public Property Nome As String
-        'Public Property Cpf As String
-        'Public Property DtNascimento As String
+        Public Property DadosAssociados As New Models.Associados()
 
-        Public Property dadosAssociados As New Models.Associados()
+        Public Sub AlterarAssociados(id As Integer)
+
+            Dim strSql As String = "UPDATE cadAssociados SET nome=@nome,cpf=@cpf,dtNascimento=@dtNascimento WHERE idAssociado=@idAssociado"
+
+            Using cmd As New SqlCommand()
+                cmd.Parameters.Add("@idAssociado", SqlDbType.Int).Value = id
+                cmd.Parameters.Add("@nome", SqlDbType.VarChar).Value = DadosAssociados.Nome
+                cmd.Parameters.Add("@cpf", SqlDbType.VarChar).Value = DadosAssociados.Cpf
+                cmd.Parameters.Add("@dtNascimento", SqlDbType.DateTime).Value = DadosAssociados.DtNascimento
+
+                cmd.CommandText = strSql
+                cmd.Connection = db
+                Try
+                    db.Open()
+                    cmd.ExecuteReader()
+                Catch ex As Exception
+                    Console.WriteLine(ex.ToString)
+                Finally
+                    db.Close()
+                End Try
+            End Using
+
+        End Sub
+
+        Public Sub DeleteAssociados(id As Integer)
+
+            Dim strSql As String = "DELETE FROM associadosXempresa WHERE idAssociado=@idAssociado;DELETE FROM cadAssociados WHERE idAssociado=@idAssociado"
+
+            Using cmd As New SqlCommand()
+                cmd.Parameters.Add("@idAssociado", SqlDbType.Int).Value = id
+
+                cmd.CommandText = strSql
+                cmd.Connection = db
+                Try
+                    db.Open()
+                    cmd.ExecuteReader()
+                Catch ex As Exception
+                    Console.WriteLine(ex.ToString)
+                Finally
+                    db.Close()
+                End Try
+            End Using
+
+        End Sub
+
 
         Public Sub AddAssociados()
-            Dim db As New SqlConnection(ConString)
+
             Dim strSql As String = "INSERT INTO cadAssociados (nome,cpf,dtNascimento) VALUES (@nome,@cpf,@dtNascimento)"
 
             Using cmd As New SqlCommand()
-                cmd.Parameters.Add("@nome", SqlDbType.VarChar).Value = dadosAssociados.Nome
-                cmd.Parameters.Add("@cpf", SqlDbType.VarChar).Value = dadosAssociados.Cpf
-                cmd.Parameters.Add("@dtNascimento", SqlDbType.DateTime).Value = dadosAssociados.DtNascimento
+                cmd.Parameters.Add("@nome", SqlDbType.VarChar).Value = DadosAssociados.Nome
+                cmd.Parameters.Add("@cpf", SqlDbType.VarChar).Value = DadosAssociados.Cpf
+                cmd.Parameters.Add("@dtNascimento", SqlDbType.DateTime).Value = DadosAssociados.DtNascimento
 
                 cmd.CommandText = strSql
                 cmd.Connection = db
@@ -40,7 +82,6 @@ Namespace Dal
         End Sub
 
         Public Function GetAssociados(id As Integer?) As IEnumerable(Of Models.Associados)
-            Dim db As New SqlConnection(ConString)
 
             Dim strSql As String = "SELECT * FROM associadosXempresa ae
                                     INNER JOIN cadEmpresa ce ON ce.idEmpresa = ae.idEmpresa
@@ -85,8 +126,10 @@ Namespace Dal
                     End Using
 
                     Return retAssociados
+
                 Catch ex As Exception
                     Console.WriteLine(ex.ToString)
+                    Return New List(Of Models.Associados)
                 Finally
                     db.Close()
                 End Try

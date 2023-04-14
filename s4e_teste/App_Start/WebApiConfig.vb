@@ -15,10 +15,5 @@ Public Module WebApiConfig
             routeTemplate:="api/{controller}/{id}",
             defaults:=New With {.id = RouteParameter.Optional}
         )
-        config.Routes.MapHttpRoute(
-           name:="PostAssociados",
-           routeTemplate:="api/{controller}/{nome}/{cpf}/{dtNascimento}",
-           defaults:=New With {.nome = RouteParameter.Optional, .cpf = RouteParameter.Optional, .dtNascimento = RouteParameter.Optional}
-       )
     End Sub
 End Module

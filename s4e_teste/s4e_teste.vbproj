@@ -263,7 +263,7 @@
       <SubType>ASPXCodebehind</SubType>
     </Compile>
     <Compile Include="App_Start\WebApiConfig.vb" />
-    <Compile Include="Classes\DataService.vb" />
+    <Compile Include="Dal\Empresas.vb" />
     <Compile Include="Empresas.aspx.designer.vb">
       <DependentUpon>Empresas.aspx</DependentUpon>
     </Compile>

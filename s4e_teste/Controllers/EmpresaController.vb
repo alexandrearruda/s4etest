@@ -4,28 +4,29 @@ Imports System.Web.Http
 Public Class EmpresaController
     Inherits ApiController
 
-    ' GET api/<controller>
-    Public Function GetValues() As IEnumerable(Of String)
-        Return New String() {"value1", "value2"}
+    Private empresas As New Dal.Empresas
+
+    Public Function GetEmpresas(id As Integer) As List(Of Models.Empresas)
+        Return empresas.GetEmpresas(id)
     End Function
 
-    ' GET api/<controller>/5
-    Public Function GetValue(ByVal id As Integer) As String
-        Return "value"
-    End Function
+    Public Sub PostEmpresas(nomeempresa As String, cnpj As String, id As Integer)
 
-    ' POST api/<controller>
-    Public Sub PostValue(<FromBody()> ByVal value As String)
-
+        If Not (String.IsNullOrEmpty(nomeempresa) AndAlso String.IsNullOrEmpty(cnpj)) Then
+            empresas.DadosEmpresas.NomeEmpresa = nomeempresa
+            empresas.DadosEmpresas.Cnpj = cnpj
+            If id > 0 Then
+                empresas.AlterarEmpresas(id)
+            Else
+                empresas.AddEmpresas()
+            End If
+        End If
     End Sub
 
-    ' PUT api/<controller>/5
-    Public Sub PutValue(ByVal id As Integer, <FromBody()> ByVal value As String)
+    Public Sub DeleteEmpresas(id As Integer)
 
-    End Sub
-
-    ' DELETE api/<controller>/5
-    Public Sub DeleteValue(ByVal id As Integer)
-
+        If id > 0 Then
+            empresas.DeleteEmpresas(id)
+        End If
     End Sub
 End Class
