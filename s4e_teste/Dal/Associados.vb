@@ -81,7 +81,7 @@ Namespace Dal
 
         End Sub
 
-        Public Function GetAssociados(id As Integer?) As IEnumerable(Of Models.Associados)
+        Public Function GetAssociadosEmpresa(id As Integer?) As IEnumerable(Of Models.Associados)
 
             Dim strSql As String = "SELECT * FROM associadosXempresa ae
                                     INNER JOIN cadEmpresa ce ON ce.idEmpresa = ae.idEmpresa
@@ -120,6 +120,99 @@ Namespace Dal
                                    .Nome = dr("nome"),
                                    .DtNascimento = dr("dtNascimento"),
                                    .Empresas = retEmpresas
+                                   })
+
+                        End While
+                    End Using
+
+                    Return retAssociados
+
+                Catch ex As Exception
+                    Console.WriteLine(ex.ToString)
+                    Return New List(Of Models.Associados)
+                Finally
+                    db.Close()
+                End Try
+
+            End Using
+
+        End Function
+
+        Public Function GetAssociados(id As Integer?) As IEnumerable(Of Models.Associados)
+
+            Dim strSql As String = "SELECT * FROM cadAssociados "
+
+            Using cmd As New SqlCommand()
+
+                If id > 0 Then
+                    strSql &= " WHERE idAssociado=@idAssociado "
+                    cmd.Parameters.Add("@idAssociado", SqlDbType.Int).Value = id
+                End If
+
+                cmd.CommandText = strSql
+                cmd.Connection = db
+                Try
+
+                    Dim retAssociados As New List(Of Models.Associados)
+
+                    db.Open()
+                    Using dr As SqlDataReader = cmd.ExecuteReader()
+
+
+                        While dr.Read
+
+                            retAssociados.Add(New Models.Associados With {
+                                   .IdAssociado = dr("idAssociado"),
+                                   .Cpf = dr("cpf"),
+                                   .Nome = dr("nome"),
+                                   .DtNascimento = dr("dtNascimento")
+                                   })
+
+                        End While
+                    End Using
+
+                    Return retAssociados
+
+                Catch ex As Exception
+                    Console.WriteLine(ex.ToString)
+                    Return New List(Of Models.Associados)
+                Finally
+                    db.Close()
+                End Try
+
+            End Using
+
+        End Function
+
+        Public Function GetAssociadosByCpf(cpf As String) As IEnumerable(Of Models.Associados)
+
+            If String.IsNullOrEmpty(cpf) Then
+                Return New List(Of Models.Associados)
+            End If
+
+
+            Dim strSql As String = "SELECT * FROM cadAssociados WHERE cpf=@cpf "
+
+            Using cmd As New SqlCommand()
+
+                cmd.Parameters.Add("@cpf", SqlDbType.VarChar).Value = cpf
+                cmd.CommandText = strSql
+                cmd.Connection = db
+                Try
+
+                    Dim retAssociados As New List(Of Models.Associados)
+
+                    db.Open()
+                    Using dr As SqlDataReader = cmd.ExecuteReader()
+
+
+                        While dr.Read
+
+                            retAssociados.Add(New Models.Associados With {
+                                   .IdAssociado = dr("idAssociado"),
+                                   .Cpf = dr("cpf"),
+                                   .Nome = dr("nome"),
+                                   .DtNascimento = dr("dtNascimento")
                                    })
 
                         End While

@@ -11,6 +11,10 @@
                     &nbsp &nbsp<span class="form-text">Consultar empresas por id:</span>
                     <asp:TextBox ID="txtCosultarId" Width="35px" runat="server"></asp:TextBox>
                     <asp:Button class="form-text" ID="btnConsultarempresasId" Text="Pesquisar" runat="server" />
+                     &nbsp &nbsp<span class="form-text">Consultar empresas por CNPJ:</span>
+                    <asp:TextBox ID="txtCosultarCnpj" Width="300px" runat="server"></asp:TextBox>
+                    &nbsp<asp:Button class="form-text" ID="btnConsultarEmpresasCnpj" Text="Pesquisar" runat="server" />
+     
                     <br />
                 </td>
             </tr>

@@ -2,7 +2,6 @@
 Namespace Dal
 
     Public Class Empresas
-
         Private Const ConString As String = "Server=127.0.0.1;Database=master;User Id=sa;Password=AIVccn067"
         Private ReadOnly db As New SqlConnection(ConString)
 
@@ -10,13 +9,12 @@ Namespace Dal
 
         Public Sub AlterarEmpresas(id As Integer)
 
-            Dim strSql As String = "UPDATE cadEmpresa SET NomeEmpresa=@NomeEmpresa,Cnpj=@Cnpj WHERE idEmpresa=@idEmpresa"
+            Dim strSql As String = "UPDATE cadEmpresa SET nomeEmpresa=@nomeEmpresa,cnpj=@cnpj WHERE idEmpresa=@idEmpresa"
 
             Using cmd As New SqlCommand()
-
                 cmd.Parameters.Add("@idEmpresa", SqlDbType.Int).Value = id
-                cmd.Parameters.Add("@NomeEmpresa", SqlDbType.VarChar).Value = DadosEmpresas.NomeEmpresa
-                cmd.Parameters.Add("@Cnpj", SqlDbType.VarChar).Value = DadosEmpresas.Cnpj
+                cmd.Parameters.Add("@nomeEmpresa", SqlDbType.VarChar).Value = DadosEmpresas.NomeEmpresa
+                cmd.Parameters.Add("@cnpj", SqlDbType.VarChar).Value = DadosEmpresas.Cnpj
 
                 cmd.CommandText = strSql
                 cmd.Connection = db
@@ -34,7 +32,7 @@ Namespace Dal
 
         Public Sub DeleteEmpresas(id As Integer)
 
-            Dim strSql As String = "DELETE FROM associadosXempresa WHERE idEmpresa=@idEmpresa;DELETE FROM cadEmpresas WHERE idEmpresa=@idEmpresa"
+            Dim strSql As String = "DELETE FROM associadosXempresa WHERE idEmpresa=@idEmpresa;DELETE FROM cadEmpresa WHERE idEmpresa=@idEmpresa"
 
             Using cmd As New SqlCommand()
                 cmd.Parameters.Add("@idEmpresa", SqlDbType.Int).Value = id
@@ -56,11 +54,11 @@ Namespace Dal
 
         Public Sub AddEmpresas()
 
-            Dim strSql As String = "INSERT INTO cadEmpresas (NomeEmpresa,Cnpj) VALUES (@NomeEmpresa,@Cnpj)"
+            Dim strSql As String = "INSERT INTO cadEmpresa (nomeEmpresa,cnpj) VALUES (@nomeEmpresa,@cnpj)"
 
             Using cmd As New SqlCommand()
-                cmd.Parameters.Add("@NomeEmpresa", SqlDbType.VarChar).Value = DadosEmpresas.NomeEmpresa
-                cmd.Parameters.Add("@Cnpj", SqlDbType.VarChar).Value = DadosEmpresas.Cnpj
+                cmd.Parameters.Add("@nomeEmpresa", SqlDbType.VarChar).Value = DadosEmpresas.NomeEmpresa
+                cmd.Parameters.Add("@cnpj", SqlDbType.VarChar).Value = DadosEmpresas.Cnpj
 
                 cmd.CommandText = strSql
                 cmd.Connection = db
@@ -76,7 +74,7 @@ Namespace Dal
 
         End Sub
 
-        Public Function GetEmpresas(id As Integer?) As IEnumerable(Of Models.Empresas)
+        Public Function GetEmpresasAssociados(id As Integer?) As IEnumerable(Of Models.Empresas)
 
             Dim strSql As String = "SELECT * FROM associadosXempresa ae
                                     INNER JOIN cadEmpresa ce ON ce.idEmpresa = ae.idEmpresa
@@ -85,7 +83,7 @@ Namespace Dal
             Using cmd As New SqlCommand()
 
                 If id > 0 Then
-                    strSql &= " WHERE ae.idEmpresa=@idEmpresa "
+                    strSql &= " WHERE ce.idEmpresa=@idEmpresa "
                     cmd.Parameters.Add("@idEmpresa", SqlDbType.Int).Value = id
                 End If
 
@@ -102,18 +100,62 @@ Namespace Dal
                         While dr.Read
 
                             retAssociados.Add(New Models.Associados With {
-                                       .IdAssociado = dr("idAssociado"),
-                                       .Cpf = dr("cpf"),
-                                       .Nome = dr("nome"),
-                                       .DtNascimento = dr("dtNascimento")
-                                       })
+                                   .IdAssociado = dr("idAssociado"),
+                                   .Cpf = dr("cpf"),
+                                   .Nome = dr("nome"),
+                                   .DtNascimento = dr("dtNascimento")
+                                   })
 
                             retEmpresas.Add(New Models.Empresas With {
-                                        .Cnpj = dr("cnpj"),
-                                        .IdEmpresa = dr("idEmpresa"),
-                                        .NomeEmpresa = dr("nomeEmpresa"),
-                                        .Associados = retAssociados
-                                        })
+                                    .Cnpj = dr("cnpj"),
+                                    .IdEmpresa = dr("idEmpresa"),
+                                    .NomeEmpresa = dr("nomeEmpresa"),
+                                    .Associados = retAssociados
+                                    })
+                        End While
+                    End Using
+
+                    Return retEmpresas
+
+                Catch ex As Exception
+                    Console.WriteLine(ex.ToString)
+                    Return New List(Of Models.Empresas)
+                Finally
+                    db.Close()
+                End Try
+
+            End Using
+
+        End Function
+
+        Public Function GetEmpresas(id As Integer?) As IEnumerable(Of Models.Empresas)
+
+            Dim strSql As String = "SELECT * FROM cadEmpresa "
+
+            Using cmd As New SqlCommand()
+
+                If id > 0 Then
+                    strSql &= " WHERE idEmpresa=@idEmpresa "
+                    cmd.Parameters.Add("@idEmpresa", SqlDbType.Int).Value = id
+                End If
+
+                cmd.CommandText = strSql
+                cmd.Connection = db
+                Try
+
+                    Dim retEmpresas As New List(Of Models.Empresas)
+
+                    db.Open()
+                    Using dr As SqlDataReader = cmd.ExecuteReader()
+
+
+                        While dr.Read
+
+                            retEmpresas.Add(New Models.Empresas With {
+                                   .IdEmpresa = dr("idEmpresa"),
+                                   .Cnpj = dr("cnpj"),
+                                   .NomeEmpresa = dr("nomeEmpresa")
+                                   })
 
                         End While
                     End Using
@@ -128,7 +170,53 @@ Namespace Dal
                 End Try
 
             End Using
+
         End Function
 
+        Public Function GetEmpresasByCnpj(cnpj As String) As IEnumerable(Of Models.Empresas)
+
+            If String.IsNullOrEmpty(cnpj) Then
+                Return New List(Of Models.Empresas)
+            End If
+
+
+            Dim strSql As String = "SELECT * FROM cadEmpresa WHERE cnpj=@cnpj "
+
+            Using cmd As New SqlCommand()
+
+                cmd.Parameters.Add("@cnpj", SqlDbType.VarChar).Value = cnpj
+                cmd.CommandText = strSql
+                cmd.Connection = db
+                Try
+
+                    Dim retEmpresas As New List(Of Models.Empresas)
+
+                    db.Open()
+                    Using dr As SqlDataReader = cmd.ExecuteReader()
+
+
+                        While dr.Read
+
+                            retEmpresas.Add(New Models.Empresas With {
+                                   .IdEmpresa = dr("idEmpresa"),
+                                   .Cnpj = dr("cnpj"),
+                                   .NomeEmpresa = dr("nomeEmpresa")
+                                   })
+
+                        End While
+                    End Using
+
+                    Return retEmpresas
+
+                Catch ex As Exception
+                    Console.WriteLine(ex.ToString)
+                    Return New List(Of Models.Empresas)
+                Finally
+                    db.Close()
+                End Try
+
+            End Using
+
+        End Function
     End Class
 End Namespace

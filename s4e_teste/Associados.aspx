@@ -12,7 +12,10 @@
                     &nbsp<asp:Button ID="btnConsultarAssociados" Text="Pesquisar" class="form-text" runat="server" />
                     &nbsp &nbsp<span class="form-text">Consultar associados por id:</span>
                     <asp:TextBox ID="txtCosultarId" Width="35px" runat="server"></asp:TextBox>
-                    <asp:Button class="form-text" ID="btnConsultarAssociadosId" Text="Pesquisar" runat="server" />
+                    &nbsp<asp:Button class="form-text" ID="btnConsultarAssociadosId" Text="Pesquisar" runat="server" />
+                     &nbsp &nbsp<span class="form-text">Consultar associados por CPF:</span>
+                    <asp:TextBox ID="txtCosultarCpf" Width="300px" runat="server"></asp:TextBox>
+                    &nbsp<asp:Button class="form-text" ID="btnConsultarAssociadosCpf" Text="Pesquisar" runat="server" />
                     <br />
                 </td>
             </tr>
