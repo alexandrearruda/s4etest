@@ -1,7 +1,7 @@
 ﻿<%@ Page Title="Empresas" Language="VB" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Empresas.aspx.vb" Inherits="s4e_teste.Empresas" %>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
-   <asp:Panel ID="pnFiltrosempresas" runat="server" CssClass="form">
+    <asp:Panel ID="pnFiltrosempresas" runat="server" CssClass="form">
         <table cellpadding="0" cellspacing="0" class="form-check-input" style="width: 100%">
             <tr>
 
@@ -11,10 +11,10 @@
                     &nbsp &nbsp<span class="form-text">Consultar empresas por id:</span>
                     <asp:TextBox ID="txtCosultarId" Width="35px" runat="server"></asp:TextBox>
                     <asp:Button class="form-text" ID="btnConsultarempresasId" Text="Pesquisar" runat="server" />
-                     &nbsp &nbsp<span class="form-text">Consultar empresas por CNPJ:</span>
+                    &nbsp &nbsp<span class="form-text">Consultar empresas por CNPJ:</span>
                     <asp:TextBox ID="txtCosultarCnpj" Width="300px" runat="server"></asp:TextBox>
                     &nbsp<asp:Button class="form-text" ID="btnConsultarEmpresasCnpj" Text="Pesquisar" runat="server" />
-     
+
                     <br />
                 </td>
             </tr>
@@ -36,7 +36,11 @@
                     <asp:TextBox class="form-text" ID="txtNome" runat="server" Width="300px"></asp:TextBox>
                     <asp:Label class="form-text" Text="Cnpj:" ID="lblCnpj" runat="server"></asp:Label>
                     &nbsp &nbsp<asp:TextBox class="form-text" ID="txtCnpj" runat="server"></asp:TextBox>
+                    <br />                     
+                    <asp:Label class="form-text" Text="Relacionar Associados:" ID="lblRelacionarAssocIns" runat="server"></asp:Label>
                     <br />
+                    <asp:ListBox class="form-text" runat="server" ID="lstRelacionarAssocIns" SelectionMode="Multiple"></asp:ListBox>
+
                 </td>
             </tr>
             <tr>
@@ -65,6 +69,9 @@
                     <asp:Label class="form-text" Text="Cnpj:" ID="lblCnpjAlterar" runat="server"></asp:Label>
                     &nbsp &nbsp<asp:TextBox class="form-text" ID="txtCnpjAlterar" runat="server"></asp:TextBox>
                     <br />
+                    <asp:Label class="form-text" Text="Relacionar Associados:" ID="lblRelacionarAssocAlt" runat="server"></asp:Label>
+                    <br />
+                    <asp:ListBox class="form-text" runat="server" ID="lstRelacionarAssocAlt" SelectionMode="Multiple"></asp:ListBox>
                 </td>
             </tr>
             <tr>
@@ -100,7 +107,7 @@
         </table>
 
     </asp:Panel>
-     <asp:GridView ID="gvEmpresas" runat="server" CssClass="form-text" ShowHeader="true" BackColor="LightGoldenrodYellow" BorderColor="Tan" BorderWidth="1px" CellPadding="2" ForeColor="Black" GridLines="Vertical" Width="100%" AutoGenerateColumns="true" ShowFooter="false">
+    <asp:GridView ID="gvEmpresas" runat="server" CssClass="form-text" ShowHeader="true" BackColor="LightGoldenrodYellow" BorderColor="Tan" BorderWidth="1px" CellPadding="2" ForeColor="Black" GridLines="Vertical" Width="100%" AutoGenerateColumns="true" ShowFooter="false">
 
         <FooterStyle BackColor="Tan" />
         <HeaderStyle BackColor="Tan" Font-Bold="True" />
@@ -112,6 +119,9 @@
         <SortedDescendingHeaderStyle BackColor="#C2A47B" />
         <EmptyDataTemplate>Nenhuma empresa cadastrada</EmptyDataTemplate>
         <RowStyle CssClass="form-text" />
-      
+        <Columns>
+            <asp:CommandField ShowSelectButton="True" />
+        </Columns>
+
     </asp:GridView>
 </asp:Content>

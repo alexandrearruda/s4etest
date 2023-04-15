@@ -8,28 +8,25 @@ Namespace Dal
         Public Property DadosEmpresas As New Models.Empresas()
 
         Public Sub AlterarEmpresas(id As Integer)
+            db.Open()
 
-            If ValidarCnpj(DadosEmpresas.Cnpj) Then
+            Dim strSql As String = "UPDATE cadEmpresa SET nomeEmpresa=@nomeEmpresa,cnpj=@cnpj WHERE idEmpresa=@idEmpresa"
 
-                Dim strSql As String = "UPDATE cadEmpresa SET nomeEmpresa=@nomeEmpresa,cnpj=@cnpj WHERE idEmpresa=@idEmpresa"
+            Using cmd As New SqlCommand()
+                cmd.Parameters.Add("@idEmpresa", SqlDbType.Int).Value = id
+                cmd.Parameters.Add("@nomeEmpresa", SqlDbType.VarChar).Value = DadosEmpresas.NomeEmpresa
+                cmd.Parameters.Add("@cnpj", SqlDbType.VarChar).Value = DadosEmpresas.Cnpj
 
-                Using cmd As New SqlCommand()
-                    cmd.Parameters.Add("@idEmpresa", SqlDbType.Int).Value = id
-                    cmd.Parameters.Add("@nomeEmpresa", SqlDbType.VarChar).Value = DadosEmpresas.NomeEmpresa
-                    cmd.Parameters.Add("@cnpj", SqlDbType.VarChar).Value = DadosEmpresas.Cnpj
+                cmd.CommandText = strSql
+                cmd.Connection = db
+                Try
+                    cmd.ExecuteReader()
+                Catch ex As Exception
+                    Console.WriteLine(ex.ToString)
 
-                    cmd.CommandText = strSql
-                    cmd.Connection = db
-                    Try
-                        db.Open()
-                        cmd.ExecuteReader()
-                    Catch ex As Exception
-                        Console.WriteLine(ex.ToString)
-                    Finally
-                        db.Close()
-                    End Try
-                End Using
-            End If
+                End Try
+            End Using
+            db.Close()
         End Sub
 
         Public Sub DeleteEmpresas(id As Integer)
@@ -56,7 +53,7 @@ Namespace Dal
 
         Public Sub AddEmpresas()
 
-            If ValidarCnpj(DadosEmpresas.Cnpj) Then
+            If Not VerificarEmpresaCnpj(DadosEmpresas.Cnpj) Then
 
                 Dim strSql As String = "INSERT INTO cadEmpresa (nomeEmpresa,cnpj) VALUES (@nomeEmpresa,@cnpj)"
 
@@ -79,24 +76,22 @@ Namespace Dal
             End If
         End Sub
 
-        Private Function ValidarCnpj(cnpj As String) As Boolean
+        Private Function VerificarEmpresaCnpj(cnpj As String) As Boolean
 
             Using cmd As New SqlCommand()
                 cmd.CommandText = "SELECT COUNT(1) FROM cadEmpresa WHERE cnpj=@cnpj"
                 cmd.Parameters.Add("@cnpj", SqlDbType.VarChar).Value = cnpj
                 cmd.Connection = db
                 db.Open()
-
                 If Convert.ToInt32(cmd.ExecuteScalar()) >= 1 Then
 
-                    Return False
+                    Return True
 
                 End If
-
                 db.Close()
             End Using
 
-            Return True
+            Return False
 
         End Function
 
@@ -199,7 +194,7 @@ Namespace Dal
 
         End Function
 
-        Public Function GetEmpresasByCnpj(cnpj As String) As IEnumerable(Of Models.Empresas)
+        Public Function GetEmpresasByCnpj(cnpj As String) As List(Of Models.Empresas)
 
             If String.IsNullOrEmpty(cnpj) Then
                 Return New List(Of Models.Empresas)
@@ -243,6 +238,108 @@ Namespace Dal
 
             End Using
 
+        End Function
+
+        Public Function GetRelacaoAssociados(idEmpresa As Integer) As List(Of Integer)
+
+            Dim strSql As String = "SELECT idAssociado FROM associadosXempresa WHERE idEmpresa = @idEmpresa"
+            Dim retRelacaoAssociados As New List(Of Integer)
+            Using cmd As New SqlCommand()
+                cmd.CommandText = strSql
+                cmd.Parameters.Add("@idEmpresa", SqlDbType.Int).Value = idEmpresa
+                cmd.Connection = db
+                db.Open()
+                Using dr As SqlDataReader = cmd.ExecuteReader()
+                    While dr.Read
+                        retRelacaoAssociados.Add(dr("idAssociado"))
+                    End While
+                End Using
+                db.Close()
+            End Using
+
+            Return retRelacaoAssociados
+
+        End Function
+        Public Function GetComboAssociados() As List(Of Models.Associados)
+
+            Dim strSql As String = "SELECT idAssociado,nome FROM cadAssociados"
+            Dim retAssociados As New List(Of Models.Associados)
+            Using cmd As New SqlCommand()
+                cmd.CommandText = strSql
+                cmd.Connection = db
+                db.Open()
+                Using dr As SqlDataReader = cmd.ExecuteReader()
+                    While dr.Read
+                        retAssociados.Add(New Models.Associados With {
+                                .IdAssociado = dr("idAssociado"),
+                                .Nome = dr("nome")
+                                })
+                    End While
+                End Using
+                db.Close()
+            End Using
+
+            Return retAssociados
+        End Function
+
+        Public Sub RelacionarAssociados(selAssociados As List(Of Integer))
+
+            Dim strSql As String = "INSERT INTO associadosXempresa (idAssociado,idEmpresa) VALUES (@idAssociado,@idEmpresa)"
+            Using cmd As New SqlCommand()
+                cmd.CommandText = strSql
+                cmd.Connection = db
+                db.Open()
+                For Each item In selAssociados
+                    cmd.Parameters.Add("@idAssociado", SqlDbType.Int).Value = item
+                    cmd.Parameters.Add("@idEmpresa", SqlDbType.Int).Value = DadosEmpresas.IdEmpresa
+                    If validarAssociacao(item, DadosEmpresas.IdEmpresa) Then
+                        cmd.ExecuteScalar()
+                    End If
+                    cmd.Parameters.Clear()
+                Next
+
+                db.Close()
+            End Using
+
+        End Sub
+
+        Public Sub RemoverRelacaoAssociados(selAssociados As List(Of Integer))
+
+            Dim strSql As String = "DELETE FROM associadosXempresa WHERE idAssociado=@idAssociado AND idEmpresa=@idEmpresa"
+            Using cmd As New SqlCommand()
+                cmd.CommandText = strSql
+                cmd.Connection = db
+                db.Open()
+                For Each item In selAssociados
+                    cmd.Parameters.Add("@idAssociado", SqlDbType.Int).Value = item
+                    cmd.Parameters.Add("@idEmpresa", SqlDbType.Int).Value = DadosEmpresas.IdEmpresa
+                    If Not validarAssociacao(item, DadosEmpresas.IdEmpresa) Then
+                        cmd.ExecuteScalar()
+                    End If
+                    cmd.Parameters.Clear()
+                Next
+
+                db.Close()
+            End Using
+
+        End Sub
+
+        Private Function validarAssociacao(idAssociado As Integer, idEmpresa As Integer) As Boolean
+
+            Dim strSql As String = "SELECT COUNT(1) FROM associadosXempresa WHERE idAssociado=@idAssociado AND idEmpresa=@idEmpresa"
+            Using cmd As New SqlCommand()
+                cmd.CommandText = strSql
+                cmd.Connection = db
+
+                cmd.Parameters.Add("@idAssociado", SqlDbType.Int).Value = idAssociado
+                cmd.Parameters.Add("@idEmpresa", SqlDbType.Int).Value = idEmpresa
+
+                If Convert.ToInt32(cmd.ExecuteScalar()) >= 1 Then
+                    Return False
+                End If
+
+                Return True
+            End Using
         End Function
     End Class
 End Namespace

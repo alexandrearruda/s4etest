@@ -96,6 +96,7 @@
     End Sub
 
     Private Sub gvAssociados_SelectedIndexChanged(sender As Object, e As EventArgs) Handles gvAssociados.SelectedIndexChanged
+        lstAssociarEmpAlt.ClearSelection()
         Dim grid As GridView = CType(sender, GridView)
         Dim linha As Integer = grid.SelectedRow.RowIndex
         If linha >= 0 Then

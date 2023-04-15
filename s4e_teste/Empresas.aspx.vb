@@ -6,6 +6,7 @@ Public Class Empresas
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
         If Not IsPostBack Then
             RecuperarEmpresas(0)
+            CarregarComboAssociados()
         End If
     End Sub
 
@@ -53,6 +54,8 @@ Public Class Empresas
 
         Dim empresas As New Controllers.EmpresaController
         empresas.PostEmpresas(txtNomeAlterar.Text, txtCnpjAlterar.Text, id)
+        empresas.RemoverRelacaoAssociados(lstRelacionarAssocAlt)
+        empresas.RelacionarAssociados(lstRelacionarAssocAlt)
         gvEmpresas.DataSource = empresas.GetEmpresas(Convert.ToInt32(id))
         gvEmpresas.DataBind()
 
@@ -61,6 +64,7 @@ Public Class Empresas
     Private Sub InserirEmpresas()
         Dim empresas As New Controllers.EmpresaController
         empresas.PostEmpresas(txtNome.Text, txtCnpj.Text, 0)
+        empresas.RelacionarAssociados(lstRelacionarAssocIns)
         gvEmpresas.DataSource = empresas.GetEmpresasByCnpj(txtCnpj.Text)
         gvEmpresas.DataBind()
 
@@ -84,5 +88,33 @@ Public Class Empresas
         gvEmpresas.DataBind()
 
 
+    End Sub
+    Private Sub CarregarComboAssociados()
+        Dim empresas As New Controllers.EmpresaController
+        For Each item In empresas.GetComboAssociados
+            lstRelacionarAssocAlt.Items.Add(New ListItem(item.Nome, item.IdAssociado))
+            lstRelacionarAssocIns.Items.Add(New ListItem(item.Nome, item.IdAssociado))
+        Next
+    End Sub
+
+    Private Sub gvEmpresas_SelectedIndexChanged(sender As Object, e As EventArgs) Handles gvEmpresas.SelectedIndexChanged
+        lstRelacionarAssocAlt.ClearSelection()
+        Dim grid As GridView = CType(sender, GridView)
+        Dim linha As Integer = grid.SelectedRow.RowIndex
+        If linha >= 0 Then
+            txtIdAlterar.Text = grid.Rows(linha).Cells(1).Text
+            txtRemoverId.Text = grid.Rows(linha).Cells(1).Text
+            txtNomeAlterar.Text = grid.Rows(linha).Cells(2).Text.ToString()
+            txtCnpjAlterar.Text = grid.Rows(linha).Cells(3).Text
+        End If
+        GetRelacaoAssociados()
+    End Sub
+
+    Private Sub GetRelacaoAssociados()
+        Dim empresas As New Controllers.EmpresaController
+        Dim lstAssociacoes As List(Of Integer) = empresas.GetRelacaoAssociados(txtIdAlterar.Text)
+        For Each item In lstAssociacoes
+            lstRelacionarAssocAlt.Items.FindByValue(item).Selected = True
+        Next
     End Sub
 End Class

@@ -11,28 +11,25 @@ Namespace Dal
 
         Public Sub AlterarAssociados(id As Integer)
             db.Open()
-            If ValidarCpf(DadosAssociados.Cpf) Then
 
-                Dim strSql As String = "UPDATE cadAssociados SET nome=@nome,cpf=@cpf,dtNascimento=@dtNascimento WHERE idAssociado=@idAssociado"
+            Dim strSql As String = "UPDATE cadAssociados SET nome=@nome,cpf=@cpf,dtNascimento=@dtNascimento WHERE idAssociado=@idAssociado"
 
-                Using cmd As New SqlCommand()
-                    cmd.Parameters.Add("@idAssociado", SqlDbType.Int).Value = id
-                    cmd.Parameters.Add("@nome", SqlDbType.VarChar).Value = DadosAssociados.Nome
-                    cmd.Parameters.Add("@cpf", SqlDbType.VarChar).Value = DadosAssociados.Cpf
-                    cmd.Parameters.Add("@dtNascimento", SqlDbType.DateTime).Value = DadosAssociados.DtNascimento
+            Using cmd As New SqlCommand()
+                cmd.Parameters.Add("@idAssociado", SqlDbType.Int).Value = id
+                cmd.Parameters.Add("@nome", SqlDbType.VarChar).Value = DadosAssociados.Nome
+                cmd.Parameters.Add("@cpf", SqlDbType.VarChar).Value = DadosAssociados.Cpf
+                cmd.Parameters.Add("@dtNascimento", SqlDbType.DateTime).Value = DadosAssociados.DtNascimento
 
-                    cmd.CommandText = strSql
-                    cmd.Connection = db
-                    Try
+                cmd.CommandText = strSql
+                cmd.Connection = db
+                Try
+                    cmd.ExecuteScalar()
+                Catch ex As Exception
+                    Console.WriteLine(ex.ToString)
 
-                        cmd.ExecuteScalar()
-                    Catch ex As Exception
-                        Console.WriteLine(ex.ToString)
+                End Try
+            End Using
 
-                    End Try
-                End Using
-
-            End If
             db.Close()
         End Sub
 
@@ -60,7 +57,7 @@ Namespace Dal
 
         Public Sub AddAssociados()
 
-            If ValidarCpf(DadosAssociados.Cpf) Then
+            If Not VerificarAssociadoCpf(DadosAssociados.Cpf) Then
 
                 Dim strSql As String = "INSERT INTO cadAssociados (nome,cpf,dtNascimento) VALUES (@nome,@cpf,@dtNascimento)"
 
@@ -333,21 +330,22 @@ Namespace Dal
             End Using
 
         End Function
-        Private Function ValidarCpf(cpf As String) As Boolean
+        Private Function VerificarAssociadoCpf(cpf As String) As Boolean
 
             Using cmd As New SqlCommand()
                 cmd.CommandText = "SELECT COUNT(1) FROM cadAssociados WHERE cpf=@cpf"
                 cmd.Parameters.Add("@cpf", SqlDbType.VarChar).Value = cpf
                 cmd.Connection = db
+                db.Open()
                 If Convert.ToInt32(cmd.ExecuteScalar()) >= 1 Then
 
-                    Return False
+                    Return True
 
                 End If
-
+                db.Close()
             End Using
 
-            Return True
+            Return False
 
         End Function
     End Class

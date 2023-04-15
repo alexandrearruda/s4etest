@@ -113,6 +113,24 @@ Partial Public Class Empresas
     Protected WithEvents txtCnpj As Global.System.Web.UI.WebControls.TextBox
 
     '''<summary>
+    '''lblRelacionarAssocIns control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblRelacionarAssocIns As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''lstRelacionarAssocIns control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lstRelacionarAssocIns As Global.System.Web.UI.WebControls.ListBox
+
+    '''<summary>
     '''btnInserir control.
     '''</summary>
     '''<remarks>
@@ -183,6 +201,24 @@ Partial Public Class Empresas
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents txtCnpjAlterar As Global.System.Web.UI.WebControls.TextBox
+
+    '''<summary>
+    '''lblRelacionarAssocAlt control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblRelacionarAssocAlt As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''lstRelacionarAssocAlt control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lstRelacionarAssocAlt As Global.System.Web.UI.WebControls.ListBox
 
     '''<summary>
     '''btnAlterar control.

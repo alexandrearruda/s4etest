@@ -26,8 +26,10 @@ Namespace Controllers
                 empresas.DadosEmpresas.Cnpj = cnpj
                 If id > 0 Then
                     empresas.AlterarEmpresas(id)
+                    empresas.DadosEmpresas.IdEmpresa = id
                 Else
                     empresas.AddEmpresas()
+                    empresas.DadosEmpresas.IdEmpresa = empresas.GetEmpresasByCnpj(cnpj).Item(0).IdEmpresa
                 End If
             End If
         End Sub
@@ -36,6 +38,37 @@ Namespace Controllers
 
             If id > 0 Then
                 empresas.DeleteEmpresas(id)
+            End If
+        End Sub
+
+        Public Function GetComboAssociados() As List(Of Models.Associados)
+            Return empresas.GetComboAssociados()
+        End Function
+
+        Public Function GetRelacaoAssociados(idEmpresa As Integer) As List(Of Integer)
+            Return empresas.GetRelacaoAssociados(idEmpresa)
+        End Function
+
+        Public Sub RelacionarAssociados(listAssociados As ListBox)
+
+            Dim selAssociado As New List(Of Integer)
+            For Each item In listAssociados.GetSelectedIndices()
+                selAssociado.Add(listAssociados.Items.Item(item).Value)
+            Next
+
+            empresas.RelacionarAssociados(selAssociado)
+        End Sub
+
+        Public Sub RemoverRelacaoAssociados(listAssociados As ListBox)
+
+            Dim selAssociado As New List(Of Integer)
+            For Each item As ListItem In listAssociados.Items
+                If Not item.Selected Then
+                    selAssociado.Add(item.Value)
+                End If
+            Next
+            If selAssociado.Count > 0 Then
+                empresas.RemoverRelacaoAssociados(selAssociado)
             End If
         End Sub
     End Class

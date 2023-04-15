@@ -52,6 +52,7 @@ Namespace Controllers
         Public Sub PostAssociados(nome As String, cpf As String, dtNascimento As String, id As Integer)
 
             If Not (String.IsNullOrEmpty(nome) AndAlso String.IsNullOrEmpty(cpf) AndAlso String.IsNullOrEmpty(dtNascimento)) Then
+
                 associados.DadosAssociados.Nome = nome
                 associados.DadosAssociados.Cpf = cpf
                 associados.DadosAssociados.DtNascimento = dtNascimento
