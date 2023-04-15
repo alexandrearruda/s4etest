@@ -68,6 +68,51 @@ Partial Public Class Associados
     Protected WithEvents btnConsultarAssociadosCpf As Global.System.Web.UI.WebControls.Button
 
     '''<summary>
+    '''txtConsultarNome control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents txtConsultarNome As Global.System.Web.UI.WebControls.TextBox
+
+    '''<summary>
+    '''btnConsultarNome control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents btnConsultarNome As Global.System.Web.UI.WebControls.Button
+
+    '''<summary>
+    '''txtConsultaData control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents txtConsultaData As Global.System.Web.UI.WebControls.TextBox
+
+    '''<summary>
+    '''CalendarExtender2 control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents CalendarExtender2 As Global.AjaxControlToolkit.CalendarExtender
+
+    '''<summary>
+    '''btnConsultaData control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents btnConsultaData As Global.System.Web.UI.WebControls.Button
+
+    '''<summary>
     '''pnInserir control.
     '''</summary>
     '''<remarks>

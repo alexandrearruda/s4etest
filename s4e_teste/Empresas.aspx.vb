@@ -10,6 +10,10 @@ Public Class Empresas
         End If
     End Sub
 
+    Private Sub btnConsultarEmpresasNome_Click(sender As Object, e As EventArgs) Handles btnConsultarEmpresasNome.Click
+        RecuperarEmpresasNome(txtCosultarNome.Text)
+    End Sub
+
     Private Sub btnConsultarEmpresas_Click(sender As Object, e As EventArgs) Handles btnConsultarempresas.Click
         RecuperarEmpresas(String.Empty)
     End Sub
@@ -70,6 +74,12 @@ Public Class Empresas
 
     End Sub
 
+    Private Sub RecuperarEmpresasNome(nome As String)
+        Dim empresas As New Controllers.EmpresaController
+        gvEmpresas.DataSource = empresas.GetEmpresasByNome(nome)
+        gvEmpresas.DataBind()
+    End Sub
+
     Private Sub RecuperarEmpresasCnpj(cnpj As String)
         Dim empresas As New Controllers.EmpresaController
         gvEmpresas.DataSource = empresas.GetEmpresasByCnpj(cnpj)
@@ -117,4 +127,5 @@ Public Class Empresas
             lstRelacionarAssocAlt.Items.FindByValue(item).Selected = True
         Next
     End Sub
+
 End Class

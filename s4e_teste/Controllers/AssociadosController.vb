@@ -6,10 +6,18 @@ Namespace Controllers
         Inherits ApiController
 
         Private associados As New Dal.Associados
+        Public Function GetAssociadosByNome(nome As String) As List(Of Models.Associados)
+            Return associados.GetAssociadosByNome(nome)
+        End Function
+
+        Public Function GetAssociadosByData(data As DateTime) As List(Of Models.Associados)
+            Return associados.GetAssociadosByData(data)
+        End Function
 
         Public Function GetAssociadosEmpresa(id As Integer) As List(Of Models.Associados)
             Return associados.GetAssociadosEmpresa(id)
         End Function
+
         Public Function GetAssociados(id As Integer) As List(Of Models.Associados)
             Return associados.GetAssociados(id)
         End Function

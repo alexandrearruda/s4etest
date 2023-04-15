@@ -8,14 +8,17 @@
                 <td valign="bottom">
                     <span class="form-text">Consultar empresas</span>
                     &nbsp<asp:Button ID="btnConsultarempresas" Text="Pesquisar" class="form-text" runat="server" />
-                    &nbsp &nbsp<span class="form-text">Consultar empresas por id:</span>
+                    &nbsp <span class="form-text">Consultar empresas por id:</span>
                     <asp:TextBox ID="txtCosultarId" Width="35px" runat="server"></asp:TextBox>
                     <asp:Button class="form-text" ID="btnConsultarempresasId" Text="Pesquisar" runat="server" />
-                    &nbsp &nbsp<span class="form-text">Consultar empresas por CNPJ:</span>
+                    <br /><br />
+                    <span class="form-text">Consultar empresas por CNPJ:</span>
                     <asp:TextBox ID="txtCosultarCnpj" Width="300px" runat="server"></asp:TextBox>
-                    &nbsp<asp:Button class="form-text" ID="btnConsultarEmpresasCnpj" Text="Pesquisar" runat="server" />
-
-                    <br />
+                    &nbsp<asp:Button class="form-text" ID="btnConsultarEmpresasCnpj" Text="Pesquisar" runat="server" />                   
+                    &nbsp &nbsp<span class="form-text">Consultar empresas por Nome:</span>
+                    &nbsp &nbsp<asp:TextBox ID="txtCosultarNome" Width="300px" runat="server"></asp:TextBox>
+                    &nbsp<asp:Button class="form-text" ID="btnConsultarEmpresasNome" Text="Pesquisar" runat="server" />
+                    <br /><br />
                 </td>
             </tr>
 
@@ -36,7 +39,7 @@
                     <asp:TextBox class="form-text" ID="txtNome" runat="server" Width="300px"></asp:TextBox>
                     <asp:Label class="form-text" Text="Cnpj:" ID="lblCnpj" runat="server"></asp:Label>
                     &nbsp &nbsp<asp:TextBox class="form-text" ID="txtCnpj" runat="server"></asp:TextBox>
-                    <br />                     
+                    <br />
                     <asp:Label class="form-text" Text="Relacionar Associados:" ID="lblRelacionarAssocIns" runat="server"></asp:Label>
                     <br />
                     <asp:ListBox class="form-text" runat="server" ID="lstRelacionarAssocIns" SelectionMode="Multiple"></asp:ListBox>

@@ -14,9 +14,12 @@ Namespace Controllers
             Return empresas.GetEmpresasAssociados(id)
         End Function
 
-
         Public Function GetEmpresasByCnpj(cnpj As String) As List(Of Models.Empresas)
             Return empresas.GetEmpresasByCnpj(cnpj)
+        End Function
+
+        Public Function GetEmpresasByNome(nome As String) As List(Of Models.Empresas)
+            Return empresas.GetEmpresasByNome(nome)
         End Function
 
         Public Sub PostEmpresas(nomeempresa As String, cnpj As String, id As Integer)

@@ -8,6 +8,13 @@
         End If
     End Sub
 
+    Private Sub btnConsultarNome_Click(sender As Object, e As EventArgs) Handles btnConsultarNome.Click
+        RecuperarAssociadosNome(txtConsultarNome.Text)
+    End Sub
+    Private Sub btnConsultaData_Click(sender As Object, e As EventArgs) Handles btnConsultaData.Click
+        RecuperarAssociadosData(txtConsultaData.Text)
+    End Sub
+
     Private Sub btnConsultarAssociados_Click(sender As Object, e As EventArgs) Handles btnConsultarAssociados.Click
         RecuperarAssociados(String.Empty)
     End Sub
@@ -68,7 +75,16 @@
         gvAssociados.DataBind()
 
     End Sub
-
+    Private Sub RecuperarAssociadosNome(nome As String)
+        Dim associados As New Controllers.AssociadosController
+        gvAssociados.DataSource = associados.GetAssociadosByNome(nome)
+        gvAssociados.DataBind()
+    End Sub
+    Private Sub RecuperarAssociadosData(data As DateTime)
+        Dim associados As New Controllers.AssociadosController
+        gvAssociados.DataSource = associados.GetAssociadosByData(data)
+        gvAssociados.DataBind()
+    End Sub
     Private Sub RecuperarAssociadosCpf(cpf As String)
         Dim associados As New Controllers.AssociadosController
         gvAssociados.DataSource = associados.GetAssociadosByCpf(cpf)
@@ -116,4 +132,5 @@
             lstAssociarEmpAlt.Items.FindByValue(item).Selected = True
         Next
     End Sub
+
 End Class

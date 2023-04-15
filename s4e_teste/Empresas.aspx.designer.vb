@@ -68,6 +68,24 @@ Partial Public Class Empresas
     Protected WithEvents btnConsultarEmpresasCnpj As Global.System.Web.UI.WebControls.Button
 
     '''<summary>
+    '''txtCosultarNome control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents txtCosultarNome As Global.System.Web.UI.WebControls.TextBox
+
+    '''<summary>
+    '''btnConsultarEmpresasNome control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents btnConsultarEmpresasNome As Global.System.Web.UI.WebControls.Button
+
+    '''<summary>
     '''pnInserir control.
     '''</summary>
     '''<remarks>

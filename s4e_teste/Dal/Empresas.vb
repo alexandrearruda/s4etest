@@ -240,6 +240,52 @@ Namespace Dal
 
         End Function
 
+        Public Function GetEmpresasByNome(nome As String) As List(Of Models.Empresas)
+
+            If String.IsNullOrEmpty(nome) Then
+                Return New List(Of Models.Empresas)
+            End If
+
+
+            Dim strSql As String = "SELECT * FROM cadEmpresa WHERE nomeEmpresa=@nomeEmpresa "
+
+            Using cmd As New SqlCommand()
+
+                cmd.Parameters.Add("@nomeEmpresa", SqlDbType.VarChar).Value = nome
+                cmd.CommandText = strSql
+                cmd.Connection = db
+                Try
+
+                    Dim retEmpresas As New List(Of Models.Empresas)
+
+                    db.Open()
+                    Using dr As SqlDataReader = cmd.ExecuteReader()
+
+
+                        While dr.Read
+
+                            retEmpresas.Add(New Models.Empresas With {
+                                   .IdEmpresa = dr("idEmpresa"),
+                                   .Cnpj = dr("cnpj"),
+                                   .NomeEmpresa = dr("nomeEmpresa")
+                                   })
+
+                        End While
+                    End Using
+
+                    Return retEmpresas
+
+                Catch ex As Exception
+                    Console.WriteLine(ex.ToString)
+                    Return New List(Of Models.Empresas)
+                Finally
+                    db.Close()
+                End Try
+
+            End Using
+
+        End Function
+
         Public Function GetRelacaoAssociados(idEmpresa As Integer) As List(Of Integer)
 
             Dim strSql As String = "SELECT idAssociado FROM associadosXempresa WHERE idEmpresa = @idEmpresa"

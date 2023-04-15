@@ -286,6 +286,95 @@ Namespace Dal
 
         End Function
 
+        Public Function GetAssociadosByNome(nome As String) As List(Of Models.Associados)
+
+            If String.IsNullOrEmpty(nome) Then
+                Return New List(Of Models.Associados)
+            End If
+
+            Dim strSql As String = "SELECT * FROM cadAssociados WHERE nome=@nome "
+
+            Using cmd As New SqlCommand()
+
+                cmd.Parameters.Add("@nome", SqlDbType.VarChar).Value = nome
+                cmd.CommandText = strSql
+                cmd.Connection = db
+                Try
+
+                    Dim retAssociados As New List(Of Models.Associados)
+
+                    db.Open()
+                    Using dr As SqlDataReader = cmd.ExecuteReader()
+
+                        While dr.Read
+
+                            retAssociados.Add(New Models.Associados With {
+                                   .IdAssociado = dr("idAssociado"),
+                                   .Cpf = dr("cpf"),
+                                   .Nome = dr("nome"),
+                                   .DtNascimento = dr("dtNascimento")
+                                   })
+
+                        End While
+                    End Using
+
+                    Return retAssociados
+
+                Catch ex As Exception
+                    Console.WriteLine(ex.ToString)
+                    Return New List(Of Models.Associados)
+                Finally
+                    db.Close()
+                End Try
+
+            End Using
+
+        End Function
+
+        Public Function GetAssociadosByData(data As DateTime) As List(Of Models.Associados)
+
+            If String.IsNullOrEmpty(data) Then
+                Return New List(Of Models.Associados)
+            End If
+
+            Dim strSql As String = "SELECT * FROM cadAssociados WHERE dtNascimento=@dtNascimento "
+
+            Using cmd As New SqlCommand()
+
+                cmd.Parameters.Add("@dtNascimento", SqlDbType.DateTime).Value = data
+                cmd.CommandText = strSql
+                cmd.Connection = db
+                Try
+
+                    Dim retAssociados As New List(Of Models.Associados)
+
+                    db.Open()
+                    Using dr As SqlDataReader = cmd.ExecuteReader()
+
+                        While dr.Read
+
+                            retAssociados.Add(New Models.Associados With {
+                                   .IdAssociado = dr("idAssociado"),
+                                   .Cpf = dr("cpf"),
+                                   .Nome = dr("nome"),
+                                   .DtNascimento = dr("dtNascimento")
+                                   })
+
+                        End While
+                    End Using
+
+                    Return retAssociados
+
+                Catch ex As Exception
+                    Console.WriteLine(ex.ToString)
+                    Return New List(Of Models.Associados)
+                Finally
+                    db.Close()
+                End Try
+
+            End Using
+        End Function
+
         Public Function GetAssociadosByCpf(cpf As String) As List(Of Models.Associados)
 
             If String.IsNullOrEmpty(cpf) Then

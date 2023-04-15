@@ -13,10 +13,18 @@
                     &nbsp &nbsp<span class="form-text">Consultar associados por id:</span>
                     <asp:TextBox ID="txtCosultarId" Width="35px" runat="server"></asp:TextBox>
                     &nbsp<asp:Button class="form-text" ID="btnConsultarAssociadosId" Text="Pesquisar" runat="server" />
-                    &nbsp &nbsp<span class="form-text">Consultar associados por CPF:</span>
+                    &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp<span class="form-text">Consultar associados por CPF:</span>
                     <asp:TextBox ID="txtCosultarCpf" Width="300px" runat="server"></asp:TextBox>
                     &nbsp<asp:Button class="form-text" ID="btnConsultarAssociadosCpf" Text="Pesquisar" runat="server" />
-                    <br />
+                    <br /><br />
+                    <span class="form-text">Consultar associados por Nome:</span>
+                    <asp:TextBox ID="txtConsultarNome" Width="300px" runat="server"></asp:TextBox>
+                    &nbsp<asp:Button class="form-text" ID="btnConsultarNome" Text="Pesquisar" runat="server" />
+                    &nbsp<span class="form-text">Consultar associados por Data de Nascimento:</span>                      
+                    <asp:TextBox ID="txtConsultaData" runat="server" class="form-text" MaxLength="10" Width="100px"></asp:TextBox>
+                    <cc1:CalendarExtender ID="CalendarExtender2" runat="server" TargetControlID="txtConsultaData" Format="dd/MM/yyyy"></cc1:CalendarExtender>
+                     &nbsp<asp:Button class="form-text" ID="btnConsultaData" Text="Pesquisar" runat="server" />
+                    <br /><br />
                 </td>
             </tr>
 
